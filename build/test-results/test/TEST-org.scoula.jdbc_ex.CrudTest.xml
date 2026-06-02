@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="org.scoula.jdbc_ex.CrudTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2026-06-01T08:29:38.674Z" hostname="M6F" time="0.053">
-  <properties/>
-  <testcase name="유저 id 기준 데이터 출력" classname="org.scoula.jdbc_ex.CrudTest" time="0.053"/>
-  <system-out><![CDATA[scoula
-]]></system-out>
-  <system-err><![CDATA[]]></system-err>
-</testsuite>
