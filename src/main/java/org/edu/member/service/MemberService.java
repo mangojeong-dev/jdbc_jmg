@@ -13,8 +13,8 @@ public class MemberService {
     private Scanner sc = new Scanner(System.in);
 
     // 수업용
-    // private MemberDao memberDao = new MemberDaoImpl();
-
+    //private MemberDao memberDao = new MemberDaoImpl();
+    // 숙제용
     private MemberDao memberDao = new MemberDaoImpl_jmg();
 
     public void displayMenu() {
@@ -29,6 +29,7 @@ public class MemberService {
                 System.out.println("3. 회원 정보 조회");
                 System.out.println("4. 회원 수정");
                 System.out.println("5. 회원 삭제");
+                System.out.println("6. 회원정보 및 부서 조회");
                 System.out.println("0. 종료");
                 System.out.print("메뉴 선택 >> ");
 
@@ -51,6 +52,9 @@ public class MemberService {
                         break;
                     case 5:
                         delete();
+                        break;
+                    case 6:
+                        getDeptName();
                         break;
 
                     case 0:
@@ -159,8 +163,6 @@ public class MemberService {
         String memberRole = sc.next();
 
         Member member = new Member();
-
-
         member.setMemberNo(memberNo);
         member.setMemberName(memberName);
         member.setMemberRole(memberRole);
@@ -181,6 +183,26 @@ public class MemberService {
 
         if(result > 0) System.out.println("회원 번호 : " + memberNo + "\n삭제 완료");
         else System.out.println("회원 삭제 실패");
+    }
+
+
+
+    // 회원번호 일치하는 회원의 번호,이름,부서코드,부서명 조회
+    private void getDeptName() throws SQLException {
+        System.out.println("=== 특정 회원정보 및 부서 조회===");
+        System.out.print("회원 번호 : ");
+        int memberNo = sc.nextInt();
+
+        Member member = memberDao.getDeptName(memberNo);
+
+        if(member != null) {
+            System.out.println("회원번호 : " + member.getMemberNo());
+            System.out.println("이름 : " + member.getMemberName());
+            System.out.println("부서코드 : " + member.getMemberId());
+            System.out.println("부서명 : " + member.getMemberRole());
+        } else {
+            System.out.println("회원 정보 조회 실패");
+        }
     }
 
 

@@ -132,4 +132,37 @@ public class MemberDaoImpl_jmg implements MemberDao{
         if(result > 0) conn.commit();
         return result;
     }
+
+
+    @Override
+    public Member getDeptName(int memberNo) throws SQLException {
+        // LEFT JOIN 사용하기
+        String sql = "SELECT m.no, m.name, d.dept_no, d.dept_name FROM members m LEFT JOIN departments d ON m.dept_no = d.dept_no WHERE no = ?";
+
+        try(PreparedStatement psmt = conn.prepareStatement(sql)) {
+            psmt.setInt(1,memberNo);
+
+            try (ResultSet rs = psmt.executeQuery()){
+                Member member = null;
+                // no == pk라서 조회 성공 시 1행만 존재
+                if(rs.next()) {
+                    member = new Member();
+
+                    member.setMemberNo(rs.getInt("no"));
+                    member.setMemberName(rs.getString("name"));
+                    member.setDept_no(rs.getInt("dept_no"));
+                    member.setDept_name(rs.getString("dept_name"));
+
+                    return member;
+                }
+                return member;
+            }
+
+        }
+
+
+    }
+
+
+
 }

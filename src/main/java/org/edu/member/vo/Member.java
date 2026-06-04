@@ -14,5 +14,7 @@ public class Member {
     private String memberName;
     private String memberRole;
     private char deletedYn;
+    private int dept_no;
+    private String dept_name;
 
 }
