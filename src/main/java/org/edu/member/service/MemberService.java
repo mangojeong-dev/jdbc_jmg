@@ -5,8 +5,8 @@ import org.edu.member.dao.MemberDaoImpl;
 import org.edu.member.dao.MemberDaoImpl_jmg;
 import org.edu.member.vo.Member;
 
-import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Scanner;
 
 public class MemberService {
@@ -50,7 +50,7 @@ public class MemberService {
                         update();
                         break;
                     case 5:
-                        //delete();
+                        delete();
                         break;
 
                     case 0:
@@ -105,6 +105,46 @@ public class MemberService {
 
     }
 
+    // getlist() : 회원 목록 전체 조회
+    // get() : 회원번호가 일치하는 회원만 조회
+    // delete() : 회원번호가 일치하는 회원 삭제
+
+
+    private void getList() throws SQLException {
+        System.out.println("===회원 목록 조회===");
+
+        List<Member> list = memberDao.getList();
+
+        if(list.isEmpty()) {
+            System.out.println("조회된 회원이 없습니다.");
+        } else {
+            for(Member member : list) {
+                System.out.println("회원 번호 : " + member.getMemberNo());
+                System.out.println("아이디 : " + member.getMemberId());
+                System.out.println("이름 : " + member.getMemberName());
+                System.out.println("권한 : " + member.getMemberRole());
+                System.out.println("--------------------");
+            }
+        }
+    }
+
+    private void get() throws SQLException {
+        System.out.println("===회원 정보 조회===");
+        System.out.print("회원 번호 : ");
+        int memberNo = sc.nextInt();
+
+        Member member = memberDao.get(memberNo);
+
+        if(member != null) {
+            System.out.println("회원 번호 : " + member.getMemberNo());
+            System.out.println("아이디 : " + member.getMemberId());
+            System.out.println("이름 : " + member.getMemberName());
+            System.out.println("권한 : " + member.getMemberRole());
+        } else {
+            System.out.println("회원 정보 조회 실패");
+        }
+    }
+
     // 회원 정보 수정
     // 회원번호를 입력받고 -> 일치하는 회원의 이름, 권한 수정해보기
     private void update() throws SQLException {
@@ -132,7 +172,17 @@ public class MemberService {
     }
 
 
-    // getlist() : 회원 목록 전체 조회
-    // get() : 회원번호가 일치하는 회원만 조회
-    // delete() : 회원번호가 일치하는 회원 삭제
+    private void delete() throws SQLException {
+        System.out.println("===회원 삭제===");
+        System.out.print("회원 번호 : ");
+        int memberNo = sc.nextInt();
+
+        int result = memberDao.delete(memberNo);
+
+        if(result > 0) System.out.println("회원 번호 : " + memberNo + "\n삭제 완료");
+        else System.out.println("회원 삭제 실패");
+    }
+
+
+
 }

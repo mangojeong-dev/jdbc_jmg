@@ -7,6 +7,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MemberDaoImpl implements MemberDao{
 
@@ -54,6 +56,16 @@ public class MemberDaoImpl implements MemberDao{
     }
 
     @Override
+    public List<Member> getList() throws SQLException {
+        return List.of();
+    }
+
+    @Override
+    public Member get(int memberNo) throws SQLException {
+        return null;
+    }
+
+    @Override
     public int update(Member member) throws SQLException {
         String sql = "UPDATE members SET name = ?, role = ? WHERE no = ?";
 
@@ -67,5 +79,10 @@ public class MemberDaoImpl implements MemberDao{
         // 삽입한 후에 커밋까지
         if(result > 0) conn.commit();
         return result;  // 성공한 행의 개수 반환까지
+    }
+
+    @Override
+    public int delete(int memberNo) throws SQLException {
+        return 0;
     }
 }

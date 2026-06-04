@@ -5,7 +5,10 @@ import org.edu.member.vo.Member;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MemberDaoImpl_jmg implements MemberDao{
 
@@ -53,6 +56,56 @@ public class MemberDaoImpl_jmg implements MemberDao{
     }
 
     @Override
+    public List<Member> getList() throws SQLException {
+        String sql = "SELECT no, id, pw, name, role, deleted_yn FROM members WHERE deleted_yn = 'N'";
+
+        PreparedStatement psmt = conn.prepareStatement(sql);
+        ResultSet rs = psmt.executeQuery();
+
+        List<Member> list = new ArrayList<>();
+
+        while(rs.next()) {
+            Member member = new Member();
+
+            member.setMemberNo(rs.getInt("no"));
+            member.setMemberId(rs.getString("id"));
+            member.setMemberPw(rs.getString("pw"));
+            member.setMemberName(rs.getString("name"));
+            member.setMemberRole(rs.getString("role"));
+            member.setDeletedYn(rs.getString("deleted_yn").charAt(0));
+
+            list.add(member);
+        }
+
+        return list;
+    }
+
+    @Override
+    public Member get(int memberNo) throws SQLException {
+        String sql = "SELECT no, id, pw, name, role, deleted_yn FROM members WHERE no = ? AND deleted_yn = 'N'";
+
+        PreparedStatement psmt = conn.prepareStatement(sql);
+        psmt.setInt(1,memberNo);
+
+        ResultSet rs = psmt.executeQuery();
+
+        Member member = null;
+
+        if(rs.next()) {
+            member = new Member();
+
+            member.setMemberNo(rs.getInt("no"));
+            member.setMemberId(rs.getString("id"));
+            member.setMemberPw(rs.getString("pw"));
+            member.setMemberName(rs.getString("name"));
+            member.setMemberRole(rs.getString("role"));
+            member.setDeletedYn(rs.getString("deleted_yn").charAt(0));
+        }
+
+        return member;
+    }
+
+    @Override
     public int update(Member member) throws SQLException {
         String sql = "UPDATE members SET name = ?, role = ? WHERE no = ?";
 
@@ -66,5 +119,17 @@ public class MemberDaoImpl_jmg implements MemberDao{
         // 삽입한 후에 커밋까지
         if(result > 0) conn.commit();
         return result;  // 성공한 행의 개수 반환까지
+    }
+    @Override
+    public int delete(int memberNo) throws SQLException {
+        String sql = "UPDATE members SET deleted_yn = 'Y' WHERE no = ?";
+
+        PreparedStatement psmt = conn.prepareStatement(sql);
+        psmt.setInt(1,memberNo);
+
+        int result = psmt.executeUpdate();
+
+        if(result > 0) conn.commit();
+        return result;
     }
 }
